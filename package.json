@@ -2,8 +2,8 @@
   "name": "node-blog",
   "version": "1.0.0",
   "description": "Samlple node-blog ",
-  "main": "server.js",
   "scripts": {
+    "start": "node interface/http",
     "test": "exit;"
   },
   "repository": {
@@ -28,6 +28,7 @@
   "dependencies": {
     "awilix": "^2.2.6",
     "dotenv": "^4.0.0",
+    "getenv": "^0.7.0",
     "image-grayscale": "^1.0.2",
     "lodash": "^4.17.4",
     "mongoose": "^4.9.6",
