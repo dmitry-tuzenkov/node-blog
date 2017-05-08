@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 const restify = require('restify');
 const container = require('../../container');
 const application = container.resolve('application');
@@ -13,9 +14,11 @@ let server = restify.createServer({
 
 server.use(restify.acceptParser(server.acceptable));
 server.use(restify.queryParser());
+server.use(restify.bodyParser({
+	mapFiles: true
+}));
 server.use(restify.CORS());
 server.use(restify.gzipResponse());
-server.use(restify.bodyParser());
 
 server.get('/articles', container.cradle.articleRoute.list);
 server.get('/articles/:id', container.cradle.articleRoute.view);
@@ -29,12 +32,14 @@ server.post('/tags/:id', container.cradle.tagRoute.create);
 server.put('/tags/:id', container.cradle.tagRoute.update);
 server.del('/tags/:id', container.cradle.tagRoute.delete);
 
-application
+module.exports = application
 	.start()
 	.then(() => {
-		return server.listen(port, () => {
+		server.listen(port, () => {
 			logger.info('%s listening at %s', server.name, server.url);
 		});
+
+		return server;
 	})
 	.catch(cause => {
 		logger.error(cause.message, cause.stack);

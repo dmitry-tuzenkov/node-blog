@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose'),
-	createdModifiedPlugin = require('mongoose-createdmodified')
+	plugin = require('mongoose-createdmodified')
 	.createdModifiedPlugin;
 
 const ArticleTagSchema = new mongoose.Schema({
@@ -11,7 +11,7 @@ const ArticleTagSchema = new mongoose.Schema({
 		trim: true
 	},
 
-	imageUrl: {
+	avatarUrl: {
 		type: String,
 		required: true,
 		trim: true
@@ -19,7 +19,7 @@ const ArticleTagSchema = new mongoose.Schema({
 
 }, { minimize: false });
 
-ArticleTagSchema.plugin(createdModifiedPlugin, { index: true });
+ArticleTagSchema.plugin(plugin, { index: true });
 const ArticleTag = mongoose.model('ArticleTag', ArticleTagSchema);
 
 module.exports = ArticleTag;

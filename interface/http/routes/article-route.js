@@ -1,6 +1,7 @@
 'use strict';
+const fs = require('fs');
 
-module.exports = ({ articleController }) => {
+module.exports = ({ articleController, imageController }) => {
 	let route = {};
 
 	route.list = (req, res, next) => {
@@ -24,8 +25,17 @@ module.exports = ({ articleController }) => {
 	};
 
 	route.create = (req, res, next) => {
-		return articleController
-			.create(req.body)
+		return imageController
+			.store(fs.createReadStream(req.files.image.path))
+			.then(stream => {
+				let attrs = req.body;
+				attrs.avatar_url = stream.path;
+
+				return Promise.all([
+					articleController.create(attrs),
+					imageController.grayscale(stream)
+				]);
+			})
 			.then(result => res.json(result))
 			.catch(cause => {
 				return next(cause);

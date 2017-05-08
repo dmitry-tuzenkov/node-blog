@@ -25,7 +25,9 @@ const ArticleSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true
-	}
+	},
+
+	tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'ArticleTag' }]
 }, { minimize: false });
 
 ArticleSchema.plugin(createdModifiedPlugin, { index: true });

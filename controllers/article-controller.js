@@ -3,10 +3,13 @@ const AbstractController = require('./abstract-controller');
 const ARTICLES_COUNT = 25;
 
 class ArticleController extends AbstractController {
-	constructor({ logger, configs, articleModel }) {
+	constructor({ logger, configs, database, articleModel }) {
+		super();
 		this.logger = logger;
 		this.configs = configs;
-		this.articleModel = articleModel;
+		this.database = database;
+		this.articleModel_ = articleModel;
+		this.articleModel = database.model('Article');
 	}
 
 	findAll(query, page) {
@@ -16,13 +19,16 @@ class ArticleController extends AbstractController {
 			.articleModel
 			.find(query)
 			.skip((page - 1) * ARTICLES_COUNT)
-			.limit(ARTICLES_COUNT);
+			.populate('tags')
+			.limit(ARTICLES_COUNT)
+			.exec();
 	}
 
 	findOne(query) {
 		return this
 			.articleModel
-			.findOne(query);
+			.findOne(query)
+			.exec();
 	}
 
 	create(entity) {

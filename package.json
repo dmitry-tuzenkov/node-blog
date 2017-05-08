@@ -4,7 +4,7 @@
   "description": "Samlple node-blog ",
   "scripts": {
     "start": "node interface/http",
-    "test": "exit;"
+    "test": "mocha --reporter spec --check-leaks"
   },
   "repository": {
     "type": "git",
@@ -45,6 +45,8 @@
     "chai": "^3.5.0",
     "mocha": "^3.3.0",
     "sinon": "^2.1.0",
+    "sinon-as-promised": "^4.0.3",
+    "sinon-mongoose": "^2.0.1",
     "supertest": "^3.0.0"
   }
 }
