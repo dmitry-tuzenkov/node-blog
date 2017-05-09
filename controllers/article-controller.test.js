@@ -1,6 +1,5 @@
 'use strict';
 const sinon = require('sinon');
-const sinonMongoose = require('sinon-mongoose');
 const expect = require('chai')
 	.expect;
 const mongoose = require('mongoose');
@@ -21,16 +20,8 @@ describe('ArticleController', () => {
 		};
 	});
 
-	it('should find all', (done) => {
-		// let spy = sinon.spy(articleModelMock, 'find');
-
-		articleModelMock
-			.expects('find')
-			// .withArgs()
-			.chain('limit', 25)
-			.chain('skip', 0)
-			.chain('exec')
-			.yields(null, []);
+	it('should find all', () => {
+		let spy = sinon.spy(ArticleModel, 'find');
 
 		controller = new ArticleController({
 			logger: loggerMock,
@@ -39,15 +30,9 @@ describe('ArticleController', () => {
 			articleModel: articleModelMock
 		});
 
-		return controller
-			.findAll({}, 1)
-			.then(result => {
-				articleModelMock.verify();
-				articleModelMock.restore();
-				expect(result)
-					.to.exist;
+		controller.findAll();
+		expect(spy.calledOnce)
+			.to.be.true;
 
-				done();
-			});
 	});
 });
